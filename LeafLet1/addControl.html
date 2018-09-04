@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <script src="addControl.js"></script>  
+  <title>Document</title>
+</head>
+<body>
+    <div id="mymap" style="height: 500px;width: 900px;"></div>
+  <script>
+  const mymap=L.map('mymap',{
+				zoomControl: true,
+				attributionControl: false,
+        zoomSnap:0.1,
+				doubleClickZoom :false}).setView([32,118.5],7);
+		const timap=L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+				maxZoom: 18
+        }).addTo(mymap);
+  var newControl=new LayerConrtol(mymap);
+  newControl.addMap();
+  </script>
+</body>
+</html>

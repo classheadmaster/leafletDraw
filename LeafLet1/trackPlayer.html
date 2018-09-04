@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <script src="trackLineControl.js"></script>
+    <script src="trackPlayer.js"></script>
+    <script src="trackDrawLine.js"></script>
+    <link rel="stylesheet" href="trackPlayer.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="mymap" style="height: 500px;width: 900px;"></div>
+    <script>
+        const mymap = L.map('mymap', {
+            zoomControl: true,
+            attributionControl: false,
+            zoomSnap: 0.1,
+            doubleClickZoom: false
+        }).setView([32, 118.5], 7);
+        const timap = L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', {
+            maxZoom: 18
+        }).addTo(mymap);
+        //声明trackPlayer 
+        var trackPlayer = trackPlayer({
+            position: 'bottomleft'
+        });
+        //定义绘制线段
+        var drawLine = new DrawLine(mymap);
+        trackPlayer.addTo(mymap);
+        var toolBar = L.control.drawRect({
+            position: 'topright'
+        }).addTo(mymap);
+        //禁止冒泡
+        L.DomEvent.disableClickPropagation(toolBar._container)
+        L.DomEvent.on(toolBar._container.childNodes[0], 'click', function() {
+            if (drawLine.poly.getLatLngs().length == 0) {
+                drawLine.show();
+                trackPlayer.poly = drawLine.poly;
+            } else {
+                console.log('线段已存在');
+            }
+        })
+    </script>
+</body>
+
+</html>
